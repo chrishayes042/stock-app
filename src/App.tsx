@@ -2,15 +2,13 @@
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { getStockData } from "./Api";
+import { Stock } from "./StockType";
 
 function App() {
   // const [count] = useState(0);
   // let stocks = JSON;
-  let obj: Stock | undefined = undefined;
-  interface Stock {
-    symbol: string;
-    price: number;
-  }
+  let obj!: Stock;
 
   return (
     <>
@@ -24,9 +22,17 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => getStockData("GME")}>Get Data</button>
+        <button
+          onClick={() =>
+            getStockData("GME").then((res) => {
+              obj = res;
+            })
+          }
+        >
+          Get Data
+        </button>
         <button onClick={() => console.log(obj?.symbol)}>Stonks </button>
-        {/* <p>{obj.symbol}</p> */}
+        <p>{obj?.symbol}</p>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -36,26 +42,6 @@ function App() {
       </p>
     </>
   );
-  async function getStockData(ticker: string) {
-    const url = `https://yh-finance-complete.p.rapidapi.com/fullData?ticker=${ticker}`;
-    const options = {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": import.meta.env.VITE_YH_KEY,
-        "X-RapidAPI-Host": "yh-finance-complete.p.rapidapi.com",
-      },
-    };
-
-    try {
-      const response = await fetch(url, options);
-      // const result = await response.json();
-      // stocks = await response.json();
-      obj = await response.json();
-      // console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 }
 
 export default App;
