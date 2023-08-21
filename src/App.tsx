@@ -31,8 +31,10 @@ function App() {
         >
           Get Data
         </button>
-        <button onClick={() => console.log(obj?.symbol)}>Stonks </button>
-        <p>{obj?.symbol}</p>
+        <button onClick={() => console.log(obj?.regularMarketPrice)}>
+          Stonks{" "}
+        </button>
+        <p id="p"></p>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
