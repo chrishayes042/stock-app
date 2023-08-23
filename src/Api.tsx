@@ -1,17 +1,20 @@
-import { Stock } from "./StockType";
+import { Stocks } from "./StockType";
 
-export async function getStockData(ticker: string): Promise<Stock> {
-  const url = `https://yh-finance-complete.p.rapidapi.com/fullData?ticker=${ticker}`;
-  const options = {
-    method: "GET",
-    headers: {
-      "X-RapidAPI-Key": import.meta.env.VITE_YH_KEY,
-      "X-RapidAPI-Host": "yh-finance-complete.p.rapidapi.com",
-    },
-  };
+export async function getStockData(ticker: string): Promise<Stocks> {
+  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${
+    import.meta.env.VITE_YH_KEY
+  }`;
+  // const options = {
+  //   method: "GET",
+  //   headers: {
+  //     "X-RapidAPI-Key": import.meta.env.VITE_YH_KEY,
+  //     "X-RapidAPI-Host": "yh-finance-complete.p.rapidapi.com",
+  //   },
+  // };
 
-  const response = await fetch(url, options);
-  const stock: Stock = await response.json();
-
+  const response = await fetch(url);
+  const stock: Stocks = await response.json();
+  console.log("Getting stonks data");
+  console.log(stock);
   return stock;
 }
