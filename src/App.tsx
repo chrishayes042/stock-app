@@ -49,7 +49,7 @@ function App() {
           Stonks{" "}
         </button>
         {isFetched && <p>stonksTS["4. close"]</p>}
-        <p id="p"></p>
+        {/* <p id="p">{stonksTS["4. close"]}</p> */}
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
