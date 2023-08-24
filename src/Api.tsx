@@ -14,7 +14,5 @@ export async function getStockData(ticker: string): Promise<Stocks> {
 
   const response = await fetch(url);
   const stock: Stocks = await response.json();
-  console.log("Getting stonks data");
-  console.log(stock);
   return stock;
 }

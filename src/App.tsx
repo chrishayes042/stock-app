@@ -12,52 +12,43 @@ function App() {
   let stockObj!: StockTimeSeries;
   const [stonks, setStocks] = useState(stocks);
   const [stonksTS, setStocksTS] = useState(stockObj);
+  let isFetched = false;
   const [error, setError] = useState({});
-  useEffect(() => {
+  function getStocks() {
     getStockData("GME")
       .then((res) => setStocks(res))
-      .catch((err) => setError(err));
-    // getKey();
-  }, []);
+      .catch((error) => setError(error));
+    console.log("getting data");
+    console.log(stonks);
+    getKey();
+  }
 
   function getKey() {
     const timeSeries = stonks["Time Series (5min)"];
     const parentKeys = Object.keys(timeSeries);
     lastKey = parentKeys[0];
     setStocksTS(stonks["Time Series (5min)"][lastKey]);
+    console.log("parsing data");
+    console.log(stonks["Time Series (5min)"][lastKey]["4. close"]);
+    isFetched = true;
   }
-
+  // if (isFetched) {
   return (
     <>
       <div className="card">
-        {/* <button
-          onClick={() =>
-            getStockData("GME").then((res) => {
-              setStocks(res);
-            })
-          }
-        >
-          Get Data
-        </button> */}
-        {/* <div>
-          {stonks == undefined ? (
-            <Loader />
-          ) : (
-            stonks["Time Series (5min)"][lastKey]["4. close"]
-          )}
-        </div> */}
-        <button onClick={() => getKey()}>Click me</button>
+        <button onClick={() => getStocks()}>Get Stonks data</button>
         <button
           onClick={() =>
             console.log(
               // stonks["Time Series (5min)"][lastKey]["4. close"]
-              lastKey
+              stonksTS["4. close"]
               // currentTime.toISOString().replace("T", " ").replace("Z", "")
             )
           }
         >
           Stonks{" "}
         </button>
+        {isFetched && <p>stonksTS["4. close"]</p>}
         <p id="p"></p>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
@@ -68,6 +59,7 @@ function App() {
       </p>
     </>
   );
+  // }
 }
 
 export default App;
