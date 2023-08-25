@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
-import { getStockData } from "./Api";
-import { Stocks, StockTimeSeries } from "./StockType";
+import { getStockData, getStockTickerData } from "./Api";
+import { Stocks, StockTimeSeries, StockTicker, BestMatch } from "./StockType";
 import Loader from "./components/Loader.tsx";
 import { useQuery } from "react-query";
 
@@ -11,8 +11,8 @@ function App() {
   let lastKey: string;
   const [stonks, setStocks] = useState<Stocks>(Object);
   const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
-  let isFetched = false;
-  console.log(stonks);
+  const [bestM, setBestM] = useState<StockTicker>(Object);
+  let stockTicker!: StockTicker;
   const [error, setError] = useState({});
   function getStocks() {
     getStockData("GME")
@@ -24,14 +24,16 @@ function App() {
     const timeSeries = stonks["Time Series (5min)"];
     const parentKeys = Object.keys(timeSeries);
     lastKey = parentKeys[0];
-    // setStocksTS(stonks["Time Series (5min)"][lastKey]);
-    // setStocks(stonks);
+
     return lastKey;
   }
-  // if (isFetched) {
+
   return (
     <>
       <div className="card">
+        <input
+          onChange={(e) => (stockTicker! = getStockTickerData(e.target.value))}
+        ></input>
         <button
           onClick={() => {
             getStocks();
@@ -42,7 +44,6 @@ function App() {
         <button
           onClick={() => {
             setStocksTS(stonks["Time Series (5min)"][getKey()]);
-            setStocks(stonks);
           }}
         >
           Stonks{" "}

@@ -18,3 +18,11 @@ export interface Stocks {
   "Meta Data": StockMetaData;
   "Time Series (5min)": { [key: string]: StockTimeSeries };
 }
+
+export interface StockTicker {
+  bestMatches: { [key: string]: BestMatch };
+}
+
+export interface BestMatch {
+  "1. Symbol": string;
+}
