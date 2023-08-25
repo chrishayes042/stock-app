@@ -32,7 +32,9 @@ function App() {
     <>
       <div className="card">
         <input
-          onChange={(e) => (stockTicker! = getStockTickerData(e.target.value))}
+          onChange={(e) =>
+            getStockTickerData(e.target.value).then((res) => setBestM(res))
+          }
         ></input>
         <button
           onClick={() => {
