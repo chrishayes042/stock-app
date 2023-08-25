@@ -1,62 +1,65 @@
 // import { useState } from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { getStockData } from "./Api";
 import { Stocks, StockTimeSeries } from "./StockType";
 import Loader from "./components/Loader.tsx";
+import { useQuery } from "react-query";
 
 function App() {
-  let stocks!: Stocks;
   let lastKey: string;
-  let stockObj!: StockTimeSeries;
-  const [stonks, setStocks] = useState(stocks);
-  const [stonksTS, setStocksTS] = useState(stockObj);
+  const [stonks, setStocks] = useState<Stocks>(Object);
+  const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
   let isFetched = false;
+  console.log(stonks);
   const [error, setError] = useState({});
   function getStocks() {
     getStockData("GME")
       .then((res) => setStocks(res))
       .catch((error) => setError(error));
-    console.log("getting data");
-    console.log(stonks);
-    getKey();
   }
 
   function getKey() {
     const timeSeries = stonks["Time Series (5min)"];
     const parentKeys = Object.keys(timeSeries);
     lastKey = parentKeys[0];
-    setStocksTS(stonks["Time Series (5min)"][lastKey]);
-    console.log("parsing data");
-    console.log(stonks["Time Series (5min)"][lastKey]["4. close"]);
-    isFetched = true;
+    // setStocksTS(stonks["Time Series (5min)"][lastKey]);
+    // setStocks(stonks);
+    return lastKey;
   }
   // if (isFetched) {
   return (
     <>
       <div className="card">
-        <button onClick={() => getStocks()}>Get Stonks data</button>
         <button
-          onClick={() =>
-            console.log(
-              // stonks["Time Series (5min)"][lastKey]["4. close"]
-              stonksTS["4. close"]
-              // currentTime.toISOString().replace("T", " ").replace("Z", "")
-            )
-          }
+          onClick={() => {
+            getStocks();
+          }}
+        >
+          Get Stonks data
+        </button>
+        <button
+          onClick={() => {
+            setStocksTS(stonks["Time Series (5min)"][getKey()]);
+            setStocks(stonks);
+          }}
         >
           Stonks{" "}
         </button>
-        {isFetched && <p>stonksTS["4. close"]</p>}
-        {/* <p id="p">{stonksTS["4. close"]}</p> */}
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        {/* {stonks ? (
+          <p>Symbol: {stonks["Meta Data"]["2. Symbol"]}</p>
+        ) : (
+          <p>Loading...</p>
+        )} */}
+        {stonksTS ? <p> Close Price: {stonksTS["4. close"]} </p> : <p></p>}
+        {stonksTS ? <p>Symbol: {stonksTS["1. open"]}</p> : <p>Loading...</p>}
+        {stonks["Meta Data"] ? (
+          <p>Symbol: {stonks["Meta Data"]["2. Symbol"]}</p>
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
   // }
