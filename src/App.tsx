@@ -12,10 +12,11 @@ function App() {
   const [stonks, setStocks] = useState<Stocks>(Object);
   const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
   const [bestM, setBestM] = useState<StockTicker>(Object);
+  const [ticker, setTicker] = useState("");
   let stockTicker!: StockTicker;
   const [error, setError] = useState({});
-  function getStocks() {
-    getStockData("GME")
+  function getStocks(ticker: string) {
+    getStockData(ticker)
       .then((res) => setStocks(res))
       .catch((error) => setError(error));
   }
@@ -32,20 +33,25 @@ function App() {
     <>
       <div className="card">
         <input
-          onChange={(e) =>
-            getStockTickerData(e.target.value).then((res) => setBestM(res))
-          }
+          id="ticker"
+          value={ticker}
+          onChange={(e) => {
+            setTicker(e.target.value);
+            // getStockTickerData(e.target.value).then((res) => setBestM(res));
+            // console.log(bestM);
+          }}
         ></input>
         <button
           onClick={() => {
-            getStocks();
+            getStocks(ticker);
           }}
         >
           Get Stonks data
         </button>
         <button
           onClick={() => {
-            setStocksTS(stonks["Time Series (5min)"][getKey()]);
+            console.log(stonks["Meta Data"]["2. Symbol"]);
+            // setStocksTS(stonks["Time Series (5min)"][getKey()]);
           }}
         >
           Stonks{" "}
@@ -55,8 +61,8 @@ function App() {
         ) : (
           <p>Loading...</p>
         )} */}
+        {stonksTS ? <p> Open: {stonksTS["1. open"]}</p> : <p>Loading...</p>}
         {stonksTS ? <p> Close Price: {stonksTS["4. close"]} </p> : <p></p>}
-        {stonksTS ? <p>Symbol: {stonksTS["1. open"]}</p> : <p>Loading...</p>}
         {stonks["Meta Data"] ? (
           <p>Symbol: {stonks["Meta Data"]["2. Symbol"]}</p>
         ) : (
