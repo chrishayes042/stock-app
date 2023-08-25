@@ -7,9 +7,6 @@ export async function getStockData(ticker: string): Promise<Stocks> {
 
   const response = await fetch(url);
   const stock: Stocks = await response.json();
-  console.log(response);
-
-  // console.log(stock["Meta Data"]);
   return stock;
 }
 export async function getStockTickerData(ticker: string): Promise<StockTicker> {
@@ -17,6 +14,5 @@ export async function getStockTickerData(ticker: string): Promise<StockTicker> {
 
   const res = await fetch(url);
   const st: StockTicker = await res.json();
-  console.log(st.bestMatches);
   return st;
 }

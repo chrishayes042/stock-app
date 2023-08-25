@@ -13,7 +13,6 @@ function App() {
   const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
   const [bestM, setBestM] = useState<StockTicker>(Object);
   const [ticker, setTicker] = useState("");
-  let stockTicker!: StockTicker;
   const [error, setError] = useState({});
   function getStocks(ticker: string) {
     getStockData(ticker)
@@ -37,8 +36,6 @@ function App() {
           value={ticker}
           onChange={(e) => {
             setTicker(e.target.value);
-            // getStockTickerData(e.target.value).then((res) => setBestM(res));
-            // console.log(bestM);
           }}
         ></input>
         <button
@@ -50,7 +47,6 @@ function App() {
         </button>
         <button
           onClick={() => {
-            console.log(stonks["Meta Data"]["2. Symbol"]);
             // setStocksTS(stonks["Time Series (5min)"][getKey()]);
           }}
         >
