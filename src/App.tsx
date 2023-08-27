@@ -1,6 +1,6 @@
 // import { useState } from "react";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { getStockData, getStockTickerData } from "./Api";
 import { Stocks, StockTimeSeries, StockTicker, BestMatch } from "./StockType";
@@ -13,19 +13,21 @@ function App() {
   const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
   const [bestM, setBestM] = useState<StockTicker>(Object);
   const [ticker, setTicker] = useState("");
-  const [error, setError] = useState({});
-  function getStocks(ticker: string) {
-    getStockData(ticker)
-      .then((res) => setStocks(res))
-      .catch((error) => setError(error));
+
+  async function getStocks(ticker: string) {
+    setStocks(await getStockData(ticker));
   }
 
-  function getKey() {
+  useEffect(() => {
+    if (stonks["Meta Data"] != undefined) {
+      setStockTimeSeries();
+    }
+  }, [stonks]);
+  function setStockTimeSeries() {
     const timeSeries = stonks["Time Series (5min)"];
     const parentKeys = Object.keys(timeSeries);
     lastKey = parentKeys[0];
-
-    return lastKey;
+    setStocksTS(stonks["Time Series (5min)"][lastKey]);
   }
 
   return (
@@ -39,6 +41,7 @@ function App() {
           }}
         ></input>
         <button
+          disabled={!ticker}
           onClick={() => {
             getStocks(ticker);
           }}
@@ -52,17 +55,21 @@ function App() {
         >
           Stonks{" "}
         </button>
-        {/* {stonks ? (
-          <p>Symbol: {stonks["Meta Data"]["2. Symbol"]}</p>
+
+        {stonksTS["1. open"] ? (
+          <p> Open: {stonksTS["1. open"]}</p>
         ) : (
-          <p>Loading...</p>
-        )} */}
-        {stonksTS ? <p> Open: {stonksTS["1. open"]}</p> : <p>Loading...</p>}
-        {stonksTS ? <p> Close Price: {stonksTS["4. close"]} </p> : <p></p>}
+          <p>Input Ticker Above</p>
+        )}
+        {stonksTS["4. close"] ? (
+          <p> Close Price: {stonksTS["4. close"]} </p>
+        ) : (
+          <p></p>
+        )}
         {stonks["Meta Data"] ? (
           <p>Symbol: {stonks["Meta Data"]["2. Symbol"]}</p>
         ) : (
-          <p>Loading...</p>
+          <p></p>
         )}
       </div>
     </>
