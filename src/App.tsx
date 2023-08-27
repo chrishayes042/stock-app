@@ -47,40 +47,19 @@ function App() {
             setTicker(e.target.value);
           }}
         ></input>
-        <button
-          disabled={!ticker}
-          onClick={() => {
-            getStocks(ticker);
-          }}
-        >
-          Get Stonks data
-        </button>
-        <button
-          onClick={() => {
-            // setStocksTS(stonks["Time Series (5min)"][getKey()]);
-          }}
-        >
-          Stonks{" "}
-        </button>
-
-        {/* {stonksTS["1. open"] ? (
-          <p> Open: {stonksTS["1. open"]}</p>
-        ) : (
-          <p>Input Ticker Above</p>
-        )}
-        {stonksTS["4. close"] ? (
-          <p> Close Price: {stonksTS["4. close"]} </p>
-        ) : (
-          <p></p>
-        )}
-        {stonks["Meta Data"] ? (
-          <p>Symbol: {stonks["Meta Data"]["2. Symbol"]}</p>
-        ) : (
-          <p></p>
-        )} */}
+        <div>
+          <button
+            disabled={!ticker}
+            onClick={() => {
+              getStocks(ticker);
+            }}
+          >
+            Get Stonks data
+          </button>
+        </div>
         {stock["Global Quote"] ? (
           <div>
-            <p>Symbol: {stock["Global Quote"]["01. symbol"]}</p>
+            {/* <p>Symbol: {stock["Global Quote"]["01. symbol"]}</p> */}
             <p>Open: {stock["Global Quote"]["02. open"]}</p>
             <p>Close: {stock["Global Quote"]["05. price"]}</p>
             <p>Volume: {stock["Global Quote"]["06. volume"]}</p>
