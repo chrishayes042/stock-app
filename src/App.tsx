@@ -1,24 +1,24 @@
 // import { useState } from "react";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
-import { getSingleDayStockData, getStockData, getStockTickerData } from "./Api";
+import { getSingleDayStockData } from "./Api";
 import {
-  Stocks,
-  StockTimeSeries,
-  StockTicker,
-  BestMatch,
+  // Stocks,
+  // StockTimeSeries,
+  // StockTicker,
+  // BestMatch,
   SingleDayStock,
 } from "./StockType";
-import Loader from "./components/Loader.tsx";
-import { useQuery } from "react-query";
+// import Loader from "./components/Loader.tsx";
+// import { useQuery } from "react-query";
 
 function App() {
-  let lastKey: string;
-  const [stonks, setStocks] = useState<Stocks>(Object);
+  // let lastKey: string;
+  // const [stonks, setStocks] = useState<Stocks>(Object);
   const [stock, setStock] = useState<SingleDayStock>(Object);
-  const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
-  const [bestM, setBestM] = useState<StockTicker>(Object);
+  // const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
+  // const [bestM, setBestM] = useState<StockTicker>(Object);
   const [ticker, setTicker] = useState("");
 
   async function getStocks(ticker: string) {

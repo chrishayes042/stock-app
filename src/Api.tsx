@@ -1,4 +1,4 @@
-import { BestMatch, Stocks, StockTicker, SingleDayStock } from "./StockType";
+import { Stocks, StockTicker, SingleDayStock } from "./StockType";
 
 const apiKey = import.meta.env.VITE_YH_KEY;
 
