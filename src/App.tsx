@@ -1,7 +1,8 @@
-// import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Chart, ChartData, ChartOptions } from "chart.js";
 
-import { useState } from "react";
 import "./App.css";
+
 import { getSingleDayStockData } from "./Api";
 import {
   // Stocks,
@@ -10,26 +11,46 @@ import {
   // BestMatch,
   SingleDayStock,
 } from "./StockType";
+
 // import Loader from "./components/Loader.tsx";
 // import { useQuery } from "react-query";
 
 function App() {
-  // let lastKey: string;
-  // const [stonks, setStocks] = useState<Stocks>(Object);
   const [stock, setStock] = useState<SingleDayStock>(Object);
-  // const [stonksTS, setStocksTS] = useState<StockTimeSeries>(Object);
-  // const [bestM, setBestM] = useState<StockTicker>(Object);
   const [ticker, setTicker] = useState("");
 
   async function getStocks(ticker: string) {
     setStock(await getSingleDayStockData(ticker));
+    getChart();
   }
+  const ctx = document.getElementById("myChart") as HTMLCanvasElement;
 
+  function getChart() {
+    const chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["High", "Low", "Close"],
+        datasets: [
+          {
+            data: [
+              stock["Global Quote"]["03. high"],
+              stock["Global Quote"]["04. low"],
+              stock["Global Quote"]["05. price"],
+            ],
+            backgroundColor: ["blue"],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+      },
+    });
+  }
   // useEffect(() => {
-  //   if (stonks["Meta Data"] != undefined) {
-  //     setStockTimeSeries();
+  //   if (ticker != undefined) {
+  //     setStock(null);
   //   }
-  // }, [stonks]);
+  // }, [ticker]);
   // function setStockTimeSeries() {
   //   const timeSeries = stonks["Time Series (5min)"];
   //   const parentKeys = Object.keys(timeSeries);
@@ -73,6 +94,7 @@ function App() {
         ) : (
           <p>Input Ticker Above</p>
         )}
+        <canvas id="myChart" width={499} height={500}></canvas>
       </div>
     </>
   );
