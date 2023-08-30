@@ -33,9 +33,10 @@ function App() {
         datasets: [
           {
             data: [
-              stock["Global Quote"]["03. high"],
-              stock["Global Quote"]["04. low"],
-              stock["Global Quote"]["05. price"],
+              // stock["Global Quote"]["03. high"],
+              // stock["Global Quote"]["04. low"],
+              // stock["Global Quote"]["05. price"],
+              100, 200, 300,
             ],
             backgroundColor: ["blue"],
           },
