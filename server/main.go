@@ -1,7 +1,8 @@
 package main
 
 import (
-	"chris/Stocks"
+	"api/pkg/model"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -26,8 +27,14 @@ func main() {
 }
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("got / request \n")
-	io.WriteString(w, "This is the site\n")
+
+	stocks := &model.SingleDayStock{model.StockArray{
+		model.SingleDayStockArray{Symbol: "GME", Open: "2", High: "3", Low: "2", Price: "4", Volume: "1000", LastestTradingDay: "today", PreviousClose: "2", Change: "2", ChangePct: "1"},
+	}}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(stocks)
 
 }
 
