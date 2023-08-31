@@ -5,11 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"strings"
+
+	"github.com/joho/godotenv"
+	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
@@ -39,9 +42,9 @@ func goDotEnvVariable(key string) string {
 	return os.Getenv(key)
 }
 
-func getRoot(w http.ResponseWriter, r *http.Request) {
+func getRoot(w http.ResponseWriter, r *http.Request, ps httprouter.Param) {
 	key := goDotEnvVariable("API_KEY")
-	response, err := http.Get("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GME&apikey=" + key)
+	response, err := http.Get("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey="+key, "))
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)
