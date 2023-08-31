@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
+
+	"log"
 	"net/http"
 	"os"
 )
@@ -27,14 +29,29 @@ func main() {
 }
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
+	response, err := http.Get("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GME&apikey=SX48BBQ29ZGLWWJY")
+	if err != nil {
+		fmt.Print(err.Error())
+		os.Exit(1)
+	}
+	responseData, err := io.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(responseData))
 
-	stocks := &model.SingleDayStock{model.StockArray{
-		model.SingleDayStockArray{Symbol: "GME", Open: "2", High: "3", Low: "2", Price: "4", Volume: "1000", LastestTradingDay: "today", PreviousClose: "2", Change: "2", ChangePct: "1"},
-	}}
+	var resObject model.SingleDayStock
+
+	fmt.Print(json.Unmarshal(responseData, &resObject))
+	fmt.Println(resObject)
+
+	// stocks := &model.SingleDayStock{model.StockArray{
+	// 	model.SingleDayStockArray{Symbol: "GME", Open: "2", High: "3", Low: "2", Price: "4", Volume: "1000", LastestTradingDay: "today", PreviousClose: "2", Change: "2", ChangePct: "1"},
+	// }}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(stocks)
+	json.NewEncoder(w).Encode(resObject)
 
 }
 
