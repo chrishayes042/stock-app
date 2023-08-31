@@ -13,7 +13,6 @@ export async function getStockData(ticker: string): Promise<Stocks> {
 export async function getSingleDayStockData(): Promise<SingleDayStock> {
   const url = `http://localhost:3333/api/singleDayStock`;
   const response = await fetch(url);
-  console.log("calling api");
   const stock: SingleDayStock = await response.json();
   return stock;
 }

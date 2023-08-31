@@ -9,10 +9,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/joho/godotenv"
-	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
@@ -42,9 +40,9 @@ func goDotEnvVariable(key string) string {
 	return os.Getenv(key)
 }
 
-func getRoot(w http.ResponseWriter, r *http.Request, ps httprouter.Param) {
+func getRoot(w http.ResponseWriter, r *http.Request) {
 	key := goDotEnvVariable("API_KEY")
-	response, err := http.Get("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey="+key, "))
+	response, err := http.Get("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=TSLA&apikey=" + key)
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)
