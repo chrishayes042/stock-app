@@ -19,34 +19,34 @@ function App() {
   const [stock, setStock] = useState<SingleDayStock>(Object);
   const [ticker, setTicker] = useState("");
 
-  async function getStocks(ticker: string) {
-    setStock(await getSingleDayStockData(ticker));
-    getChart();
+  async function getStocks() {
+    setStock(await getSingleDayStockData());
+    // getChart();
   }
-  const ctx = document.getElementById("myChart") as HTMLCanvasElement;
+  // const ctx = document.getElementById("myChart") as HTMLCanvasElement;
 
-  function getChart() {
-    const chart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: ["High", "Low", "Close"],
-        datasets: [
-          {
-            data: [
-              // stock["Global Quote"]["03. high"],
-              // stock["Global Quote"]["04. low"],
-              // stock["Global Quote"]["05. price"],
-              100, 200, 300,
-            ],
-            backgroundColor: ["blue"],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-      },
-    });
-  }
+  // function getChart() {
+  //   const chart = new Chart(ctx, {
+  //     type: "line",
+  //     data: {
+  //       labels: ["High", "Low", "Close"],
+  //       datasets: [
+  //         {
+  //           data: [
+  //             // stock["Global Quote"]["03. high"],
+  //             // stock["Global Quote"]["04. low"],
+  //             // stock["Global Quote"]["05. price"],
+  //             100, 200, 300,
+  //           ],
+  //           backgroundColor: ["blue"],
+  //         },
+  //       ],
+  //     },
+  //     options: {
+  //       responsive: true,
+  //     },
+  //   });
+  // }
   // useEffect(() => {
   //   if (ticker != undefined) {
   //     setStock(null);
@@ -73,7 +73,7 @@ function App() {
           <button
             disabled={!ticker}
             onClick={() => {
-              getStocks(ticker);
+              getStocks();
             }}
           >
             Get Stonks data

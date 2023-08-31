@@ -10,11 +10,10 @@ export async function getStockData(ticker: string): Promise<Stocks> {
   return stock;
 }
 
-export async function getSingleDayStockData(
-  ticker: string
-): Promise<SingleDayStock> {
-  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${apiKey}`;
+export async function getSingleDayStockData(): Promise<SingleDayStock> {
+  const url = `http://localhost:3333/api/singleDayStock`;
   const response = await fetch(url);
+  console.log("calling api");
   const stock: SingleDayStock = await response.json();
   return stock;
 }

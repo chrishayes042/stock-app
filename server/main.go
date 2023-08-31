@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/joho/godotenv"
 	"io"
-
 	"log"
 	"net/http"
 	"os"
@@ -15,7 +15,7 @@ import (
 func main() {
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", getRoot)
+	mux.HandleFunc("/api/singleDayStock", getRoot)
 	mux.HandleFunc("/api/hello", getHello)
 
 	err := http.ListenAndServe(":3333", mux)
@@ -27,9 +27,21 @@ func main() {
 		os.Exit(1)
 	}
 }
+func goDotEnvVariable(key string) string {
+
+	// load .env file
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	return os.Getenv(key)
+}
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
-	response, err := http.Get("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GME&apikey=SX48BBQ29ZGLWWJY")
+	key := goDotEnvVariable("API_KEY")
+	response, err := http.Get("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GME&apikey=" + key)
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)
@@ -48,7 +60,8 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 	// stocks := &model.SingleDayStock{model.StockArray{
 	// 	model.SingleDayStockArray{Symbol: "GME", Open: "2", High: "3", Low: "2", Price: "4", Volume: "1000", LastestTradingDay: "today", PreviousClose: "2", Change: "2", ChangePct: "1"},
 	// }}
-
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(resObject)
